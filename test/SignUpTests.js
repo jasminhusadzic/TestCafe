@@ -45,4 +45,14 @@ fixture `Creating new users in roles as Supplier, Distributor and Retailer`
         await t.expect(ProfilePage.getProfileTitle()).eql('Supplier Name', 'Page title should matched');
     })
 
+    test('Navigate to SignUp and create new Supplier withour Credit Card Number then verify error appear', async () => {
+        await SignUpPage.selectRole('supplier');
+        await t.expect(SignUpPage.supplierCompanyName.getAttribute('placeholder')).eql('Supplier Company Name', 'Placeholder should be matched');
+        await SignUpPage.createNewSupplier('Supplier Name', 'Jasmin Husadzic', 'myemail@email.com', 'passworD12#');
+        await t.expect(SignUpPage.paymenyDetailsHeader.innerText).eql('Payment Details', 'Payment Details should appear');
+        await SignUpPage.insertPaymentDetails('Adress', 'New York', 'USA', '78000', '06555555', '', '12/22 222');
+        await SignUpPage.clickSignUpButton();
+        await t.expect(SignUpPage.cardNumber.getAttribute('placeholder')).eql('Credit Card number must be entered', 'Credit Card noumber should be entered');
+    })
+
 
