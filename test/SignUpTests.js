@@ -30,8 +30,19 @@ fixture `Creating new users in roles as Supplier, Distributor and Retailer`
 
     test('Navigate to SignUp and create new Retailer then verify Distributor is created', async () => {
         await SignUpPage.selectRole('retailer');
-        await t.expect(SignUpPage.retailerCheckBox.getAttribute('placeholder')).eql('Retailer Company Name', 'Placeholder should be matched');
+        await t.expect(SignUpPage.retailerCompanyName.getAttribute('placeholder')).eql('Retailer Company Name', 'Placeholder should be matched');
         await SignUpPage.createNewRetailer('Retailer Name', 'Jasmin Husadzic', 'myemail@email.com', '');
         await t.expect(ProfilePage.getProfileTitle()).eql('Retaile Name', 'Page title should matched');
     })
+
+    test('Navigate to SignUp and create new Supplier then verify Supplier is created', async () => {
+        await SignUpPage.selectRole('supplier');
+        await t.expect(SignUpPage.supplierCompanyName.getAttribute('placeholder')).eql('Supplier Company Name', 'Placeholder should be matched');
+        await SignUpPage.createNewSupplier('Supplier Name', 'Jasmin Husadzic', 'myemail@email.com', 'passworD12#');
+        await t.expect(SignUpPage.paymenyDetailsHeader.innerText).eql('Payment Details', 'Payment Details should appear');
+        await SignUpPage.insertPaymentDetails('Adress', 'New York', 'USA', '78000', '06555555', '4111-1111-1111-1111', '12/22 222');
+        await SignUpPage.clickSignUpButton();
+        await t.expect(ProfilePage.getProfileTitle()).eql('Supplier Name', 'Page title should matched');
+    })
+
 
