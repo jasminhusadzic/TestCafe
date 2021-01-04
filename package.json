@@ -1,0 +1,27 @@
+{
+  "name": "testcafe",
+  "version": "1.0.0",
+  "description": "e2e tests",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "chai": "^4.2.0",
+    "testcafe": "^1.10.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jasminhusadzic/TestCafe.git"
+  },
+  "author": "Jasmin Husadzic",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jasminhusadzic/TestCafe/issues"
+  },
+  "homepage": "https://github.com/jasminhusadzic/TestCafe#readme"
+}
