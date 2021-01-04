@@ -3,5 +3,6 @@ module.exports={
     password: 'passworD12#',
     email: 'test+<RANDOM_STRING>@gmail.com',
     distributorName: 'Distributor Name',
-    retailerName: 'Retailer Name'
+    retailerName: 'Retailer Name',
+    supplierName: 'Supplier Name'
 }
