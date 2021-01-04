@@ -5,15 +5,16 @@ class SignUpPage {
 
     constructor(){
         this.supplierCheckBox = Selector('input').withAttribute('id', 'example-supplier-checkbox-id');
-        this.distributorCheckBox = Selector('input').withAttribute('id', 'example-distributor-checkbox-id');
-        this.retailerCheckBox = Selector('input').withAttribute('id', 'example-retailer-checkbox-id');
-        this.retailerCompanyName = Selector('input').withAttribute('id', 'example-company-id');
-        this.distributorCompanyName = Selector('input').withAttribute('id', 'example-distributor-id');
+        this.distributorCheckBox = Selector('label').withText('Distributor');
+        this.retailerCheckBox = Selector('label').withText('Retailer');
+        // this.retailerCompanyName = Selector('input').withAttribute('id', 'example-company-id');
+        this.companyNameLabel = Selector('label').withAttribute('for', 'companySearch');
+        this.companyNameInput = Selector('#companySearch');
         this.supplierCompanyName = Selector('input').withAttribute('id', 'example-supplier-id');
-        this.yourName = Selector('input').withAttribute('id', 'example-name-id');
-        this.email = Selector('input').withAttribute('id', 'example-email-id');
-        this.password = Selector('input').withAttribute('id', 'example-password-id');
-        this.signUpButton = Selector('button').withAttribute('id', 'example-button-id');
+        this.yourName = Selector('input').withAttribute('aria-label', 'Your Name');
+        this.email = Selector('input').withAttribute('aria-label', 'Email Address');
+        this.password = Selector('input').withAttribute('aria-label', 'Password');
+        this.signUpButton = Selector('div').withExactText('SIGN UP');
         this.paymenyDetailsHeader = Selector('h1').withAttribute('id', 'example-payment-id');
         this.paymentAddress = Selector('input').withAttribute('id', 'example-adress-id');
         this.paymentCity = Selector('input').withAttribute('id', 'example-city-id');
@@ -36,24 +37,21 @@ class SignUpPage {
     }
 
     async fulFillUserForm(yourName, email, password){
-        await
-            t.typeText(this.yourName, yourName);
-            t.typeText(this.email, email);
-            t.typeText(this.password, password);
+        await t.typeText(this.yourName, yourName);
+        await t.typeText(this.email, email);
+        await t.typeText(this.password, password);
     }
 
     async createNewDistributor(companyName, yourName, email, password){
-        await 
-            t.typeText(this.distributorCompanyName, companyName);
-            this.fulFillUserForm(yourName, email, password);
-            t.click(this.signUpButton);
+        await t.typeText(this.companyNameInput, companyName);
+        await this.fulFillUserForm(yourName, email, password);
+        await t.click(this.signUpButton);
     }
 
     async createNewRetailer(companyName, yourName, email, password){
-        await 
-            t.typeText(this.retailerCompanyName, companyName);
-            this.fulFillUserForm(yourName, email, password);
-            t.click(this.signUpButton);
+        await t.typeText(this.companyNameInput, companyName);
+        await this.fulFillUserForm(yourName, email, password);
+        await t.click(this.signUpButton);
     }
         
     async createNewSupplier(){

@@ -12,7 +12,7 @@
   },
   "devDependencies": {},
   "scripts": {
-    "test": "test"
+    "test": "testcafe --skip-js-errors chrome ./test/"
   },
   "repository": {
     "type": "git",

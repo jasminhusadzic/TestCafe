@@ -4,6 +4,8 @@ class ProfilePage {
 
     constructor(){
         this.profileTitle = Selector('h1').withAttribute('id', 'example-profile-id');
+        this.userName = Selector('div').withText('Jasmin');
+        this.signOutButton = Selector('p').withText('Sign Out')
     }
 
 
@@ -15,6 +17,11 @@ class ProfilePage {
         catch (e){
             console.log(e);
         }
+    }
+
+    async logoutUser(){
+        await t
+            .click(this.signOutButton);
     }
 
 }
