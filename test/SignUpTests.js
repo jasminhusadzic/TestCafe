@@ -51,7 +51,7 @@ fixture `Creating new users in roles as Supplier, Distributor and Retailer`
         await t.expect(ProfilePage.userName.innerText).contains(registrationData.username, {timeout:10000});
     })
 
-    test.only('Navigate to SignUp and create new Supplier then verify Supplier is created', async () => {
+    test('Navigate to SignUp and create new Supplier then verify Supplier is created', async () => {
         await SignUpPage.selectRole('supplier');
         await t.expect(SignUpPage.companyNameLabel.innerText).eql('Supplier Name', 'Placeholder should be matched');
         await SignUpPage.createNewSupplier(registrationData.supplierName, registrationData.username, emailAddressSupplier, registrationData.password);
