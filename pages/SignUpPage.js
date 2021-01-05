@@ -11,7 +11,9 @@ class SignUpPage {
         this.companyNameInput = Selector('#companySearch');
         this.yourName = Selector('input').withAttribute('aria-label', 'Your Name');
         this.email = Selector('input').withAttribute('aria-label', 'Email Address');
+        this.emailLabel = Selector('label').withText('Email Address');
         this.password = Selector('input').withAttribute('aria-label', 'Password');
+        this.passwordLabel = Selector('label').withText('Password');
         this.signUpButton = Selector('div').withExactText('SIGN UP');
         this.paymenyDetailsHeader = Selector('p').withText('Payment Details');
         this.paymentAddress = Selector('input').withAttribute('aria-label', 'Address Line 1');
@@ -42,13 +44,7 @@ class SignUpPage {
         await t.typeText(this.password, password);
     }
 
-    async createNewDistributor(companyName, yourName, email, password){
-        await t.typeText(this.companyNameInput, companyName);
-        await this.fulFillUserForm(yourName, email, password);
-        await t.click(this.signUpButton);
-    }
-
-    async createNewRetailer(companyName, yourName, email, password){
+    async createNewClient(companyName, yourName, email, password){
         await t.typeText(this.companyNameInput, companyName);
         await this.fulFillUserForm(yourName, email, password);
         await t.click(this.signUpButton);
@@ -69,13 +65,26 @@ class SignUpPage {
             .switchToIframe(this.stripeIframe)
             .typeText(this.cardNumber, cardNumber)
             .typeText(this.mmyyCVC, CVC)
-            .typeText(this.paymentPostal, paymentPostal)
-            .switchToMainWindow();
+        if(paymentPostal !== ''){
+            await t.typeText(this.paymentPostal, paymentPostal)
+        }
+        await t.switchToMainWindow();
+    }
+
+    async switchToStripeIframe(){
+        await t
+            .switchToIframe(this.stripeIframe);
     }
 
     async clickSignUpButton(){
         await
             t.click(this.signUpButton);
+    }
+
+    async verifyCardIsInvalid(){
+        await t
+            .switchToIframe(this.stripeIframe)
+            .expect(this.cardNumber.hasClass('is-invalid')).ok();
     }
 
 }

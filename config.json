@@ -1,0 +1,5 @@
+{
+    "baseUrlDev": "...",
+    "baseUrlTest": "https://test.brewoptix.com/",
+    "baseUrlStaging": "..."
+}

@@ -1,19 +1,20 @@
-import { expect } from "chai";
 import uuidv4 from "uuid/v4";
 import { t } from "testcafe";
 import ProfilePage from "../pages/ProfilePage";
 import SignUpPage from "../pages/SignUpPage"
 import registrationData from "../data/registration"
+import paymentData from "../data/payment"
+import { getBaseUrl } from '../pages/helpers/baseUrl'
 
 const emailAddressDistributor = `${uuidv4()}@brewoptix.com`;
 const emailAddressRetailer = `${uuidv4()}@brewoptix.com`;
 const emailAddressSupplier = `${uuidv4()}@brewoptix.com`;
 
 fixture `Creating new users in roles as Supplier, Distributor and Retailer`
-    .page  `https://test.brewoptix.com`
+    .page(getBaseUrl())
     .beforeEach(async t => {
         await t
-            .navigateTo('https://test.brewoptix.com/session/sign-up')
+            .navigateTo(getBaseUrl() + 'session/sign-up')
             .maximizeWindow();
     })
     .afterEach(async t => {
@@ -24,31 +25,31 @@ fixture `Creating new users in roles as Supplier, Distributor and Retailer`
     test('Navigate to SignUp and create new Distributor then verify Distributor is created', async t => {
         await SignUpPage.selectRole('distributor');
         await t.expect(SignUpPage.companyNameLabel.innerText).eql('Distributor Company Name', 'Placeholder should be matched');
-        await SignUpPage.createNewDistributor(registrationData.distributorName, registrationData.username, emailAddressDistributor, registrationData.password);
-        await t.wait(5000);
-        await t.expect(ProfilePage.userName.innerText).contains(registrationData.username, {timeout:10000});
+        await SignUpPage.createNewClient(registrationData.distributorName, registrationData.username, emailAddressDistributor, registrationData.password);
+        await t.wait(15000);
+        await t.expect(ProfilePage.userName.innerText).contains(registrationData.username, {timeout:15000});
     })
 
-    // test('Navigate to SignUp and create new Distributor with invalid email then verify error message appear', async () => {
-    //     await SignUpPage.selectRole('distributor');
-    //     await t.expect(SignUpPage.distributorCompanyName.getAttribute('placeholder')).eql('Distributor Company Name', 'Placeholder should be matched');
-    //     await SignUpPage.createNewDistributor('Distributor Name', 'Jasmin Husadzic', 'email.com', 'passworD12#');
-    //     await t.expect(SignUpPage.email.getAttribute('placeholder')).eql('Email Address not valid', 'Expect valid email format');
-    // })
+    test('Navigate to SignUp and create new Distributor with invalid email then verify error message appear', async () => {
+        await SignUpPage.selectRole('distributor');
+        await t.expect(SignUpPage.companyNameLabel.innerText).eql('Distributor Company Name', 'Placeholder should be matched');
+        await SignUpPage.createNewClient(registrationData.distributorName, registrationData.username, 'invalidEmail', registrationData.password);
+        await t.expect(SignUpPage.emailLabel.hasClass('error--text')).ok();
+    })
 
-    // test('Navigate to SignUp and create new Distributor with empty password input then verify error message appear', async () => {
-    //     await SignUpPage.selectRole('distributor');
-    //     await t.expect(SignUpPage.distributorCompanyName.getAttribute('placeholder')).eql('Distributor Company Name', 'Placeholder should be matched');
-    //     await SignUpPage.createNewDistributor('Distributor Name', 'Jasmin Husadzic', 'myemail@email.com', '');
-    //     await t.expect(SignUpPage.password.getAttribute('placeholder')).eql('Password should not be empty', 'Expect valid password');
-    // })
+    test('Navigate to SignUp and create new Distributor with invalid password input then verify error message appear', async () => {
+        await SignUpPage.selectRole('distributor');
+        await t.expect(SignUpPage.companyNameLabel.innerText).eql('Distributor Company Name', 'Placeholder should be matched');
+        await SignUpPage.createNewClient(registrationData.distributorName, registrationData.username, emailAddressDistributor, 'test');
+        await t.expect(SignUpPage.passwordLabel.hasClass('error--text')).ok();
+    })
 
     test('Navigate to SignUp and create new Retailer then verify Retailer is created', async () => {
         await SignUpPage.selectRole('retailer');
         await t.expect(SignUpPage.companyNameLabel.innerText).eql('Retailer Company Name', 'Placeholder should be matched');
-        await SignUpPage.createNewRetailer(registrationData.retailerName, registrationData.username, emailAddressRetailer, registrationData.password);
-        await t.wait(5000);
-        await t.expect(ProfilePage.userName.innerText).contains(registrationData.username, {timeout:10000});
+        await SignUpPage.createNewClient(registrationData.retailerName, registrationData.username, emailAddressRetailer, registrationData.password);
+        await t.wait(15000);
+        await t.expect(ProfilePage.userName.innerText).contains(registrationData.username, {timeout:15000});
     })
 
     test('Navigate to SignUp and create new Supplier then verify Supplier is created', async () => {
@@ -56,20 +57,36 @@ fixture `Creating new users in roles as Supplier, Distributor and Retailer`
         await t.expect(SignUpPage.companyNameLabel.innerText).eql('Supplier Name', 'Placeholder should be matched');
         await SignUpPage.createNewSupplier(registrationData.supplierName, registrationData.username, emailAddressSupplier, registrationData.password);
         await t.expect(SignUpPage.paymenyDetailsHeader.innerText).eql('Payment Details', 'Payment Details should appear');
-        await SignUpPage.insertPaymentDetails('Adress', 'New York', 'USA', '78000', '06555555', '4111 1111 1111 1111', '12/22 222', '78000');
+        await SignUpPage.insertPaymentDetails(
+            paymentData.address, 
+            paymentData.city, 
+            paymentData.state, 
+            paymentData.postalCode, 
+            paymentData.phone,
+            paymentData.creditCard,
+            paymentData.expiration,
+            paymentData.postalCode);
         await SignUpPage.clickSignUpButton();
-        await t.wait(15000);
-        await t.expect(ProfilePage.userName.innerText).contains(registrationData.username, {timeout:15000});
+        await t.wait(25000);
+        await t.expect(ProfilePage.userName.innerText).contains(registrationData.username, {timeout:25000});
     })
 
-    // test('Navigate to SignUp and create new Supplier withour Credit Card Number then verify error appear', async () => {
-    //     await SignUpPage.selectRole('supplier');
-    //     await t.expect(SignUpPage.supplierCompanyName.getAttribute('placeholder')).eql('Supplier Company Name', 'Placeholder should be matched');
-    //     await SignUpPage.createNewSupplier('Supplier Name', 'Jasmin Husadzic', 'myemail@email.com', 'passworD12#');
-    //     await t.expect(SignUpPage.paymenyDetailsHeader.innerText).eql('Payment Details', 'Payment Details should appear');
-    //     await SignUpPage.insertPaymentDetails('Adress', 'New York', 'USA', '78000', '06555555', '', '12/22 222');
-    //     await SignUpPage.clickSignUpButton();
-    //     await t.expect(SignUpPage.cardNumber.getAttribute('placeholder')).eql('Credit Card number must be entered', 'Credit Card noumber should be entered');
-    // })
+    test('Navigate to SignUp and create new Supplier with invalid Credit Card Number then verify error appear', async () => {
+        await SignUpPage.selectRole('supplier');
+        await t.expect(SignUpPage.companyNameLabel.innerText).eql('Supplier Name', 'Placeholder should be matched');
+        await SignUpPage.createNewSupplier(registrationData.supplierName, registrationData.username, emailAddressSupplier, registrationData.password);
+        await t.expect(SignUpPage.paymenyDetailsHeader.innerText).eql('Payment Details', 'Payment Details should appear');
+        await SignUpPage.insertPaymentDetails(
+            paymentData.address, 
+            paymentData.city, 
+            paymentData.state, 
+            paymentData.postalCode, 
+            paymentData.phone,
+            "1234 5678 9101 1121",
+            paymentData.expiration,
+            '');
+        await t.wait(15000);
+        await SignUpPage.verifyCardIsInvalid();
+    })
 
 

@@ -8,11 +8,15 @@
   },
   "dependencies": {
     "chai": "^4.2.0",
-    "testcafe": "^1.10.1"
+    "testcafe": "^1.10.1",
+    "testcafe-reporter-html": "^1.4.6"
   },
   "devDependencies": {},
   "scripts": {
-    "test": "testcafe --skip-js-errors chrome ./test/"
+    "chrome:test": "TESTCAFE_ENV=test testcafe --skip-js-errors chrome ./test/ --reporter html:./output/test.html",
+    "chrome:test:headless": "TESTCAFE_ENV=test testcafe --skip-js-errors chrome:headless ./test/ --reporter html:./output/test.html",
+    "chrome:staging": "TESTCAFE_ENV=staging testcafe --skip-js-errors chrome ./test/ --reporter html:./output/test.html",
+    "chrome:staging:headless": "TESTCAFE_ENV=staging testcafe --skip-js-errors chrome:headless ./test/ --reporter html:./output/test.html"
   },
   "repository": {
     "type": "git",
